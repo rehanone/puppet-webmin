@@ -8,12 +8,10 @@ class webmin::service () inherits webmin {
 
   if $webmin::service_manage {
     service { $webmin::service_name:
-      ensure     => $webmin::service_ensure,
-      enable     => $webmin::service_enable,
-      name       => $webmin::service_name,
-      hasstatus  => true,
-      hasrestart => true,
-      subscribe  => Class["${module_name}::config"],
+      ensure    => $webmin::service_ensure,
+      enable    => $webmin::service_enable,
+      name      => $webmin::service_name,
+      subscribe => Class["${module_name}::config"],
     }
   }
 }

@@ -13,11 +13,11 @@ class webmin::params {
   $ssl_keyfile     = '/etc/webmin/miniserv.pem'
   $ssl_certfile    = '/etc/webmin/miniserv.cert'
   $ssl_chainfile   = '/etc/webmin/extracas.chain'
-  $ssl_perl_wrapper= $::facts[osfamily] ? {
-    'RedHat'    => 'perl-Net-SSLeay',
-    'Debian'    => 'libnet-ssleay-perl',
-    'Archlinux' => 'perl-net-ssleay',
-    default     => undef,
+  $ssl_dependencies= $::facts[osfamily] ? {
+    'RedHat'    => ['perl-Net-SSLeay'],
+    'Debian'    => ['libnet-ssleay-perl'],
+    'Archlinux' => ['perl-net-ssleay'],
+    default     => [],
   }
   $allowed_networks= undef
   $firewall_manage = false
