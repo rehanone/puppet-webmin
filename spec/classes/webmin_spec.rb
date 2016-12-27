@@ -3,7 +3,13 @@ require 'spec_helper'
 describe 'webmin' do
   let :facts do
     {
-      :operatingsystem => 'Archlinux',
+      :os => { :name => 'RedHat', },
+    }
+  end
+
+  let :params do
+    {
+      :service_manage => false,
     }
   end
 
