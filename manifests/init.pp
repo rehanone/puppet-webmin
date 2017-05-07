@@ -3,14 +3,25 @@ class webmin (
   Boolean $repo_manage     = $webmin::params::repo_manage,
   String  $package_ensure  = $webmin::params::package_ensure,
   String  $package_name    = $webmin::params::package_name,
+  Array[String]
+          $ssl_dependencies= $webmin::params::ssl_dependencies,
+  Stdlib::Absolutepath
+          $config_file     = $webmin::params::config_file,
   Boolean $service_enable  = $webmin::params::service_enable,
-  String  $service_ensure  = $webmin::params::service_ensure,
+  Enum[stopped, running]
+          $service_ensure  = $webmin::params::service_ensure,
   Boolean $service_manage  = $webmin::params::service_manage,
   String  $service_name    = $webmin::params::service_name,
+  Boolean $firewall_manage = $webmin::params::firewall_manage,
+
   Integer $service_port    = $webmin::params::service_port,
-  Optional[String]
-          $service_ip      = $webmin::params::service_ip,
   Boolean $ssl_enable      = $webmin::params::ssl_enable,
+  Boolean $ssl_reject_ssl2 = $webmin::params::ssl_reject_ssl2,
+  Boolean $ssl_reject_ssl3 = $webmin::params::ssl_reject_ssl3,
+  Boolean $ssl_reject_tls1 = $webmin::params::ssl_reject_tls1,
+  Boolean $ssl_reject_tls11= $webmin::params::ssl_reject_tls11,
+  Boolean $ssl_reject_tls12= $webmin::params::ssl_reject_tls12,
+  Boolean $ssl_redirect    = $webmin::params::ssl_redirect,
   Stdlib::Absolutepath
           $ssl_keyfile     = $webmin::params::ssl_keyfile,
   Stdlib::Absolutepath
@@ -18,21 +29,20 @@ class webmin (
   Stdlib::Absolutepath
           $ssl_chainfile   = $webmin::params::ssl_chainfile,
   Array[String]
-          $ssl_dependencies= $webmin::params::ssl_dependencies,
-  Optional[Array[String]]
           $allowed_networks= $webmin::params::allowed_networks,
-  Boolean $firewall_manage = $webmin::params::firewall_manage,
+  Optional[String]
+          $gui_theme       = $webmin::params::gui_theme,
   ) inherits webmin::params {
 
   if ($package_ensure in [ 'absent', 'purged' ]) {
     class { "${module_name}::install": }
   } else {
-    anchor { "${module_name}::begin": } ->
-      class { "${module_name}::repo": } ->
-      class { "${module_name}::install": } ->
-      class { "${module_name}::config": } ~>
-      class { "${module_name}::service": } ->
-      class { "${module_name}::firewall": }->
-    anchor { "${module_name}::end": }
+    anchor { "${module_name}::begin": }
+    -> class { "${module_name}::repo": }
+    -> class { "${module_name}::install": }
+    -> class { "${module_name}::config": }
+    ~> class { "${module_name}::service": }
+    -> class { "${module_name}::firewall": }
+    -> anchor { "${module_name}::end": }
   }
 }
