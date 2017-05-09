@@ -6,7 +6,7 @@ class webmin::params {
   $package_name    = 'webmin'
   $ssl_dependencies= $facts[os][family] ? {
     'RedHat'    => ['perl-Net-SSLeay', 'perl-Encode-Detect', 'perl-Authen-PAM'],
-    'Debian'    => ['libnet-ssleay-perl'],
+    'Debian'    => ['perl', 'libnet-ssleay-perl', 'openssl', 'libauthen-pam-perl', 'libpam-runtime', 'libio-pty-perl', 'apt-show-versions', 'python'],
     'Archlinux' => ['perl-net-ssleay'],
     default     => [],
   }
