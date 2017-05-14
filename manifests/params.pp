@@ -1,10 +1,11 @@
 class webmin::params {
   $repo_ensure     = present
   $repo_manage     = true
+  $package_manage  = true
   $package_ensure  = 'latest'
   $package_name    = 'webmin'
   $ssl_dependencies= $::facts[osfamily] ? {
-    'RedHat'    => ['perl-Net-SSLeay'],
+    'RedHat'    => ['perl-Net-SSLeay', 'perl-Encode-Detect', 'perl-Authen-PAM'],
     'Debian'    => ['libnet-ssleay-perl'],
     'Archlinux' => ['perl-net-ssleay'],
     default     => [],
@@ -28,5 +29,18 @@ class webmin::params {
   $ssl_reject_tls11= true
   $ssl_reject_tls12= false
   $ssl_redirect    = true
-  $gui_theme       = 'authentic-theme'
+
+  $package_epel_url = $::facts[osfamily] ? {
+    'RedHat' => "https://dl.fedoraproject.org/pub/epel/${::facts[operatingsystemmajrelease]}/${::facts[architecture]}/",
+    default => '',
+  }
+
+  $package_epel_key = $::facts[osfamily] ? {
+    'RedHat' => $::facts[operatingsystemmajrelease] ? {
+      '6' => 'https://getfedora.org/static/0608B895.txt',
+      '7' => 'https://getfedora.org/static/352C64E5.txt',
+      default => '',
+    },
+    default => '',
+  }
 }

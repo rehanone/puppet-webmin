@@ -2,24 +2,36 @@ class webmin::repo () inherits webmin {
 
   assert_private("Use of private class ${name} by ${caller_module_name}")
 
-  $codename = $::facts[lsbdistcodename]
+  $release = $::facts[operatingsystemrelease]
 
   if $webmin::repo_manage {
-    case $::facts[osfamily] {
-      'RedHat': {
+    case $::facts[operatingsystem] {
+      'CentOS': {
+        yumrepo { 'epel':
+          ensure   => $webmin::repo_ensure,
+          baseurl  => $webmin::params::package_epel_url,
+          enabled  => true,
+          gpgcheck => true,
+          gpgkey   => $webmin::params::package_epel_key,
+          descr    => 'EPEL Distribution',
+        }
         yumrepo { 'webmin':
-          ensure     =>  $webmin::params::repo_ensure,
+          ensure     => $webmin::repo_ensure,
           mirrorlist => 'http://download.webmin.com/download/yum/mirrorlist',
-          enabled    => '1',
-          gpgcheck   => '1',
+          enabled    => true,
+          gpgcheck   => true,
           gpgkey     => 'http://www.webmin.com/jcameron-key.asc',
           descr      => 'Webmin Distribution',
         }
       }
-      'Ubuntu', 'Debian': {
-        case $codename {
-          'precise', 'trusty', 'xenial': {
-            apt::source { 'webmin_mirror':
+      'Ubuntu': {
+        case $release {
+          '12.04', '14.04', '16.04': {
+            require apt
+
+            class { 'webmin::update::ppa':
+            }
+            -> apt::source { 'webmin_mirror':
               ensure   => 'absent',
               location => 'http://webmin.mirror.somersettechsolutions.co.uk/repository',
               release  => 'sarge',
@@ -32,8 +44,8 @@ class webmin::repo () inherits webmin {
                 'src' => false,
               },
             }
-            apt::source { 'webmin_main':
-              ensure   =>  $webmin::params::repo_ensure,
+            -> apt::source { 'webmin_main':
+              ensure   => $webmin::params::repo_ensure,
               location => 'http://download.webmin.com/download/repository',
               release  => 'sarge',
               repos    => 'contrib',
@@ -45,8 +57,9 @@ class webmin::repo () inherits webmin {
                 'src' => false,
               },
             }
+            -> class { 'webmin::update::apt': }
           }
-          default: { warning("${codename} is not a supported platform") }
+          default: { warning("${release} is not a supported platform") }
         }
       }
       'Archlinux': { }
