@@ -25,7 +25,6 @@ class webmin::config () inherits webmin {
         'no_tls1_2':     value => $webmin::ssl_reject_tls12;
         'ssl_redirect':  value => $webmin::ssl_redirect;
         'allow':         value => $webmin::allowed_networks;
-        'preroot':       value => $webmin::gui_theme;
       }
     }
     default: { warning("Not applying webmin config for ${os_family}, make sure Augeas provider is supported on ${os_family}") }

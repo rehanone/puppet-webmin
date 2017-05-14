@@ -4,8 +4,6 @@ define webmin::option (
       $value,
 ) {
 
-  assert_private("Use of private class ${name} by ${caller_module_name}")
-
   if $value !~ Undef {
 
     $str_value = $value ? {
@@ -16,11 +14,11 @@ define webmin::option (
     }
 
     $changes = $str_value ? {
-      ''      => "clear \"${name}\"",
-      default => "set \"${name}\" \"${str_value}\"",
+      ''      => "clear \"${title}\"",
+      default => "set \"${title}\" \"${str_value}\"",
     }
 
-    augeas { "webmin-${name}":
+    augeas { "webmin-${title}":
       incl    => $webmin::config_file,
       lens    => 'Webmin.lns',
       changes => $changes,

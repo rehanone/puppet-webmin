@@ -5,7 +5,7 @@ describe 'webmin::repo', :type => :class do
   end
 
   let(:facts) { {
-    :osfamily => 'RedHat',
+    :operatingsystem => 'CentOS',
     :lsbdistcodename => 'xenial'
   } }
 

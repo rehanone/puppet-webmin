@@ -1,6 +1,7 @@
 class webmin (
   String  $repo_ensure     = $webmin::params::repo_ensure,
   Boolean $repo_manage     = $webmin::params::repo_manage,
+  Boolean $package_manage  = $webmin::params::package_manage,
   String  $package_ensure  = $webmin::params::package_ensure,
   String  $package_name    = $webmin::params::package_name,
   Array[String]
@@ -30,8 +31,6 @@ class webmin (
           $ssl_chainfile   = $webmin::params::ssl_chainfile,
   Array[String]
           $allowed_networks= $webmin::params::allowed_networks,
-  Optional[String]
-          $gui_theme       = $webmin::params::gui_theme,
   ) inherits webmin::params {
 
   if ($package_ensure in [ 'absent', 'purged' ]) {
