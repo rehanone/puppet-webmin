@@ -5,8 +5,8 @@ class webmin::repo () inherits webmin {
   $release = $::facts[operatingsystemrelease]
 
   if $webmin::repo_manage {
-    case $::facts[operatingsystem] {
-      'CentOS': {
+    case $::facts[os][family] {
+      'RedHat': {
         yumrepo { 'epel':
           ensure   => $webmin::repo_ensure,
           baseurl  => $webmin::params::package_epel_url,
@@ -24,46 +24,40 @@ class webmin::repo () inherits webmin {
           descr      => 'Webmin Distribution',
         }
       }
-      'Ubuntu': {
-        case $release {
-          '12.04', '14.04', '16.04': {
-            require apt
+      'Debian': {
+        require apt
 
-            class { 'webmin::update::ppa':
-            }
-            -> apt::source { 'webmin_mirror':
-              ensure   => 'absent',
-              location => 'http://webmin.mirror.somersettechsolutions.co.uk/repository',
-              release  => 'sarge',
-              repos    => 'contrib',
-              key      => {
-                'id'     => '1719003ACE3E5A41E2DE70DFD97A3AE911F63C51',
-                'source' => 'http://www.webmin.com/jcameron-key.asc',
-              },
-              include  => {
-                'src' => false,
-              },
-            }
-            -> apt::source { 'webmin_main':
-              ensure   => $webmin::params::repo_ensure,
-              location => 'http://download.webmin.com/download/repository',
-              release  => 'sarge',
-              repos    => 'contrib',
-              key      => {
-                'id'     => '1719003ACE3E5A41E2DE70DFD97A3AE911F63C51',
-                'source' => 'http://www.webmin.com/jcameron-key.asc',
-              },
-              include  => {
-                'src' => false,
-              },
-            }
-            -> class { 'webmin::update::apt': }
-          }
-          default: { warning("${release} is not a supported platform") }
+        class { 'webmin::update::ppa':
+        }
+        -> apt::source { 'webmin_mirror':
+          ensure   => 'absent',
+          location => 'http://webmin.mirror.somersettechsolutions.co.uk/repository',
+          release  => 'sarge',
+          repos    => 'contrib',
+          key      => {
+            'id'     => '1719003ACE3E5A41E2DE70DFD97A3AE911F63C51',
+            'source' => 'http://www.webmin.com/jcameron-key.asc',
+          },
+          include  => {
+            'src' => false,
+          },
+        }
+        -> apt::source { 'webmin_main':
+          ensure   => $webmin::params::repo_ensure,
+          location => 'http://download.webmin.com/download/repository',
+          release  => 'sarge',
+          repos    => 'contrib',
+          key      => {
+            'id'     => '1719003ACE3E5A41E2DE70DFD97A3AE911F63C51',
+            'source' => 'http://www.webmin.com/jcameron-key.asc',
+          },
+          include  => {
+            'src' => false,
+          },
         }
       }
-      'Archlinux': { }
-      default: { }
+      'Archlinux': {}
+      default: {}
     }
   }
 }
