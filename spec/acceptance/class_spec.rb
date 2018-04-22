@@ -34,4 +34,34 @@ describe 'webmin class:', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily'
       end
     end
   end
+
+  context 'service_ensure => running:' do
+    it 'runs successfully' do
+      pp = "class { 'webmin': service_ensure => running }"
+
+      apply_manifest(pp, catch_failures: true) do |r|
+        expect(r.stderr).not_to match(%r{error}i)
+      end
+    end
+  end
+
+  context 'service_ensure => stopped:' do
+    it 'runs successfully' do
+      pp = "class { 'webmin': service_ensure => stopped }"
+
+      apply_manifest(pp, catch_failures: true) do |r|
+        expect(r.stderr).not_to match(%r{error}i)
+      end
+    end
+  end
+
+  context 'firewall_manage => true:' do
+    it 'runs successfully' do
+      pp = "class { 'webmin': firewall_manage => true }"
+
+      apply_manifest(pp, catch_failures: true) do |r|
+        expect(r.stderr).not_to match(%r{error}i)
+      end
+    end
+  end
 end
