@@ -1,0 +1,7 @@
+---
+webmin::ssl_dependencies:
+  - 'perl-Net-SSLeay'
+  - 'perl-Encode-Detect'
+  - 'perl-Authen-PAM'
+webmin::package_epel_url: "https://dl.fedoraproject.org/pub/epel/%{facts.os.release.major}/%{facts.os.architecture}/"
+webmin::package_epel_key: ''

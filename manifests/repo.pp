@@ -5,14 +5,14 @@ class webmin::repo () inherits webmin {
   $release = $::facts[operatingsystemrelease]
 
   if $webmin::repo_manage {
-    case $::facts[os][name] {
-      'CentOS': {
+    case $::facts[os][family] {
+      'RedHat': {
         yumrepo { 'epel':
           ensure   => $webmin::repo_ensure,
-          baseurl  => $webmin::params::package_epel_url,
+          baseurl  => lookup('webmin::package_epel_url'),
           enabled  => true,
           gpgcheck => true,
-          gpgkey   => $webmin::params::package_epel_key,
+          gpgkey   => lookup('webmin::package_epel_key'),
           descr    => 'EPEL Distribution',
         }
         yumrepo { 'webmin':
@@ -24,7 +24,7 @@ class webmin::repo () inherits webmin {
           descr      => 'Webmin Distribution',
         }
       }
-      'Debian', 'Ubuntu': {
+      'Debian': {
         require apt
 
         class { 'webmin::update::ppa':
@@ -43,7 +43,7 @@ class webmin::repo () inherits webmin {
           },
         }
         -> apt::source { 'webmin_main':
-          ensure   => $webmin::params::repo_ensure,
+          ensure   => $webmin::repo_ensure,
           location => 'http://download.webmin.com/download/repository',
           release  => 'sarge',
           repos    => 'contrib',

@@ -1,0 +1,3 @@
+---
+webmin::ssl_dependencies:
+  - 'perl-net-ssleay'

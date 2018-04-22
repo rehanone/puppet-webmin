@@ -1,0 +1,6 @@
+---
+webmin::ssl_dependencies:
+  - 'libnet-ssleay-perl'
+  - 'libauthen-pam-perl'
+  - 'libpam-runtime'
+  - 'libio-pty-perl'
