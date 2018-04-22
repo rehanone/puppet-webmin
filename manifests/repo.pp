@@ -5,8 +5,8 @@ class webmin::repo () inherits webmin {
   $release = $::facts[operatingsystemrelease]
 
   if $webmin::repo_manage {
-    case $::facts[os][family] {
-      'RedHat': {
+    case $::facts[os][name] {
+      'CentOS': {
         yumrepo { 'epel':
           ensure   => $webmin::repo_ensure,
           baseurl  => $webmin::params::package_epel_url,
@@ -24,7 +24,7 @@ class webmin::repo () inherits webmin {
           descr      => 'Webmin Distribution',
         }
       }
-      'Debian': {
+      'Debian', 'Ubuntu': {
         require apt
 
         class { 'webmin::update::ppa':
@@ -55,6 +55,7 @@ class webmin::repo () inherits webmin {
             'src' => false,
           },
         }
+        -> class { 'webmin::update::apt': }
       }
       'Archlinux': {}
       default: {}
