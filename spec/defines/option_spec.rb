@@ -78,7 +78,7 @@ describe 'webmin::option' do
 
       context 'with an array of strings as a value', :compile do
         let(:title) { 'test' }
-        let(:params) { { value: %w[ssl tls] } }
+        let(:params) { { value: ['ssl', 'tls'] } }
 
         it {
           is_expected.to contain_augeas('webmin-test').with(
