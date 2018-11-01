@@ -4,5 +4,9 @@ fixtures:
       repo: "puppetlabs/stdlib"
     apt:
       repo: "puppetlabs/apt"
+    augeas_core:
+      repo: "puppetlabs/augeas_core"
+    yumrepo_core:
+      repo: "puppetlabs/yumrepo_core"
   symlinks:
     webmin: "#{source_dir}"
