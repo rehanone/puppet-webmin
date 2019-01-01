@@ -27,35 +27,22 @@ class webmin::repo () inherits webmin {
       'Debian': {
         require apt
 
-        class { 'webmin::update::ppa':
+        case $::facts[os][release][major] {
+          '18.04', '18.10': {
+            anchor { "${module_name}::begin_update": }
+            -> class { "${module_name}::update::ppa": }
+            -> class { "${module_name}::update::sources": }
+            -> class { "${module_name}::update::apt": }
+            -> anchor { "${module_name}::end_update": }
+          }
+          default: {
+            anchor { "${module_name}::begin_update": }
+            -> class { "${module_name}::update::ppa": }
+            -> class { "${module_name}::update::sources": }
+            -> class { "${module_name}::update::apt": }
+            -> anchor { "${module_name}::end_update": }
+          }
         }
-        -> apt::source { 'webmin_mirror':
-          ensure   => 'absent',
-          location => 'http://webmin.mirror.somersettechsolutions.co.uk/repository',
-          release  => 'sarge',
-          repos    => 'contrib',
-          key      => {
-            'id'     => '1719003ACE3E5A41E2DE70DFD97A3AE911F63C51',
-            'source' => 'http://www.webmin.com/jcameron-key.asc',
-          },
-          include  => {
-            'src' => false,
-          },
-        }
-        -> apt::source { 'webmin_main':
-          ensure   => $webmin::repo_ensure,
-          location => 'http://download.webmin.com/download/repository',
-          release  => 'sarge',
-          repos    => 'contrib',
-          key      => {
-            'id'     => '1719003ACE3E5A41E2DE70DFD97A3AE911F63C51',
-            'source' => 'http://www.webmin.com/jcameron-key.asc',
-          },
-          include  => {
-            'src' => false,
-          },
-        }
-        -> class { 'webmin::update::apt': }
       }
       'Archlinux': {}
       default: {}
