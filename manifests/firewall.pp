@@ -8,7 +8,7 @@ class webmin::firewall () inherits webmin {
     if size($webmin::allowed_networks) > 0 {
       $webmin::allowed_networks.each |$network| {
         if defined('::firewall') {
-          firewall { "${port} Allow Webmin connection on port: ${port} from: ${network}":
+          firewall { "${port} Allow WEBMIN tcp connection on port: ${port} from: ${network}":
             dport  => $port,
             source => $network,
             proto  => tcp,
@@ -17,18 +17,18 @@ class webmin::firewall () inherits webmin {
         }
 
         if defined('::ferm') {
-          ferm::rule { "${port} Allow Webmin connection on port: ${port} from: ${network}":
+          ferm::rule { "WEBMIN - Allow inbound tcp connection on port: ${port} from: ${network}":
             chain  => 'INPUT',
-            action => 'ACCEPT',
-            proto  => tcp,
-            dport  => $port,
             saddr  => $network,
+            dport  => "(${port})",
+            proto  => tcp,
+            action => 'ACCEPT',
           }
         }
       }
     } else {
       if defined('::firewall') {
-        firewall { "${port} Allow Webmin connection on port: ${port}":
+        firewall { "${port} Allow WEBMIN tcp connection on port: ${port}":
           dport  => $port,
           proto  => tcp,
           action => accept,
@@ -36,11 +36,11 @@ class webmin::firewall () inherits webmin {
       }
 
       if defined('::ferm') {
-        ferm::rule { "${port} Allow Webmin connection on port: ${port}":
+        ::ferm::rule { "WEBMIN - Allow inbound tcp connection on port: ${port}":
           chain  => 'INPUT',
-          action => 'ACCEPT',
+          dport  => "(${port})",
           proto  => tcp,
-          dport  => $port,
+          action => 'ACCEPT',
         }
       }
     }
