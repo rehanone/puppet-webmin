@@ -1,3 +1,10 @@
+## 0.4.1 (May 5, 2020)
+
+Improvements:
+
+- Fix firewall rule naming issue.
+- Removed unused test files.
+
 ## 0.4.0 (May 1, 2020)
 
 Improvements:
