@@ -1,3 +1,8 @@
+## 0.5.0 (July 5, 2020)
+
+- Changed the type of `service_port` from String to Stdlib:Port.
+- Updated `pdk` templates.
+
 ## 0.4.1 (May 5, 2020)
 
 Improvements:
