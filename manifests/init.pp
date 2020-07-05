@@ -12,7 +12,7 @@ class webmin (
   String                 $service_name,
   Boolean                $firewall_manage,
 
-  Integer                $service_port,
+  Stdlib::Port           $service_port,
   Boolean                $ssl_enable,
   Boolean                $ssl_reject_ssl2,
   Boolean                $ssl_reject_ssl3,

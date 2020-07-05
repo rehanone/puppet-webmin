@@ -20,7 +20,7 @@ class webmin::firewall () inherits webmin {
           ferm::rule { "WEBMIN - Allow inbound tcp connection on port: ${port} from: ${network}":
             chain  => 'INPUT',
             saddr  => $network,
-            dport  => "(${port})",
+            dport  => $port,
             proto  => tcp,
             action => 'ACCEPT',
           }
