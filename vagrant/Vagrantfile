@@ -1,0 +1,51 @@
+
+require 'yaml'
+
+settings = YAML.load_file 'vagrant.yml'
+
+vm_hostname = settings['vm']['hostname']
+
+box_os = settings['box']['os']
+box_name = settings['box']['name']
+box_url = settings['box']['url']
+
+puppet_source_file = settings['puppet']['source_file']
+puppet_source_url = settings['puppet']['source_url']
+puppet_extra_packages = settings['puppet']['extra_packages']
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.require_version ">= 2.0.0", "< 3.0.0"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.hostname = vm_hostname
+  config.vm.box = box_name
+  config.vm.box_url = box_url
+
+  config.vm.network :public_network
+
+  config.vm.synced_folder "../", "/etc/puppetlabs/code/environments/production/modules/webmin"
+
+  config.vm.provision "shell" do |s|
+    s.name = "Install Puppet"
+    s.path = "puppet-install/#{box_os}.sh"
+    s.args   = [puppet_source_file, puppet_source_url, puppet_extra_packages.join(" ")]
+  end
+
+  config.vm.provision :shell, inline: <<-EOF
+    puppet module install puppetlabs/stdlib
+    puppet module install puppetlabs/apt
+    puppet module install puppetlabs/augeas_core
+    puppet module install puppetlabs/yumrepo_core
+    puppet module install puppet/epel
+  EOF
+
+  config.vm.provision :puppet do |puppet|
+    puppet.manifests_path = "../examples"
+    puppet.manifest_file  = "init.pp"
+#	puppet.module_path    = ["."]
+#    puppet.options        = "../"
+#    puppet.options        = "--verbose --debug"
+  end
+end

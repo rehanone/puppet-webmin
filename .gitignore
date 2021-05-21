@@ -6,7 +6,7 @@
 *.iml
 /.bundle/
 /.idea/
-/.vagrant/
+**/.vagrant/
 /coverage/
 /bin/
 /doc/

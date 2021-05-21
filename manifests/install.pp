@@ -7,7 +7,6 @@ class webmin::install () inherits webmin {
   if $webmin::package_manage {
     package { $webmin::package_name:
       ensure => $webmin::package_ensure,
-      alias  => 'webmin',
     }
   }
 }

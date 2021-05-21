@@ -7,7 +7,7 @@ class webmin::config () inherits webmin {
     default => undef,
   }
 
-  $os_family = $::facts[osfamily]
+  $os_family = $::facts[os][family]
 
   case $os_family {
     'RedHat', 'Debian': {

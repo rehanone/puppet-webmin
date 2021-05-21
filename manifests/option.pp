@@ -1,7 +1,5 @@
-
 define webmin::option (
-  Variant[Boolean, Integer, String, Array[String], Undef]
-      $value,
+  Variant[Boolean, Integer, String, Array[String], Undef] $value,
 ) {
 
   if $value !~ Undef {
@@ -22,7 +20,7 @@ define webmin::option (
       incl    => $webmin::config_file,
       lens    => 'Webmin.lns',
       changes => $changes,
-      notify  => Class["${module_name}::service"]
+      notify  => Class["${module_name}::service"],
     }
   }
 }
