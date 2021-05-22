@@ -27,21 +27,18 @@ class webmin::repo () inherits webmin {
       'Debian': {
         require apt
 
-        case $::facts[os][release][major] {
-          '18.04', '18.10': {
-            anchor { "${module_name}::begin_update": }
-            -> class { "${module_name}::update::ppa": }
-            -> class { "${module_name}::update::sources": }
-            -> class { "${module_name}::update::apt": }
-            -> anchor { "${module_name}::end_update": }
-          }
-          default: {
-            anchor { "${module_name}::begin_update": }
-            -> class { "${module_name}::update::ppa": }
-            -> class { "${module_name}::update::sources": }
-            -> class { "${module_name}::update::apt": }
-            -> anchor { "${module_name}::end_update": }
-          }
+        notify {"Setting up system as test VM: ${::facts[test_vm]}":}
+        if $::facts[test_vm] {
+          anchor { "${module_name}::begin_update": }
+          -> class { "${module_name}::update::ppa": }
+          -> class { "${module_name}::update::sources": }
+          -> class { "${module_name}::update::apt": }
+          -> anchor { "${module_name}::end_update": }
+        } else {
+          anchor { "${module_name}::begin_update": }
+          -> class { "${module_name}::update::sources": }
+          -> class { "${module_name}::update::apt": }
+          -> anchor { "${module_name}::end_update": }
         }
       }
       'Archlinux': {}
