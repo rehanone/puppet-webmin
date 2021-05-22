@@ -1,18 +1,26 @@
+## 0.6.0 (May 22, 2021)
+
+**Improvements:**
+
+- Updated `pdk` templates.
+
 ## 0.5.0 (July 5, 2020)
+
+**Improvements:**
 
 - Changed the type of `service_port` from String to Stdlib:Port.
 - Updated `pdk` templates.
 
 ## 0.4.1 (May 5, 2020)
 
-Improvements:
+**Improvements:**
 
 - Fix firewall rule naming issue.
 - Removed unused test files.
 
 ## 0.4.0 (May 1, 2020)
 
-Improvements:
+**Improvements:**
 
 - Added support for Ubuntu 20.04.
 - Updated `pdk` templates.
@@ -20,7 +28,7 @@ Improvements:
 
 ## 0.3.0 (February 16, 2020)
 
-Improvements:
+**Improvements:**
 
 - Added support for CentOS 8.
 - Updated os support matrix.
@@ -28,7 +36,7 @@ Improvements:
 
 ## 0.2.0 (August 29, 2019)
 
-Improvements:
+**Improvements:**
 
 - Added support for Debian 10.
 - Updated os support matrix.
@@ -36,9 +44,7 @@ Improvements:
 
 ## 0.1.0 (May 22, 2016)
 
-Features:
+**Features:**
 
   - Initial release
-
-Bugfixes:
 
