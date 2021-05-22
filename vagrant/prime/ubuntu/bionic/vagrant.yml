@@ -1,0 +1,13 @@
+
+vm:
+  hostname: 'prime'
+
+box:
+  os: 'ubuntu'
+  name: 'bento/ubuntu-18.04'
+  url: 'https://app.vagrantup.com/bento/boxes/ubuntu-18.04'
+
+puppet:
+  source_file: 'puppet7-release-bionic.deb'
+  source_url: 'https://apt.puppetlabs.com/'
+  extra_packages: []

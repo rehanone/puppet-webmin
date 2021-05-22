@@ -1,0 +1,14 @@
+
+vm:
+  hostname: 'prime'
+
+box:
+  os: 'ubuntu'
+  name: 'bento/ubuntu-20.04'
+  url: 'https://app.vagrantup.com/bento/boxes/ubuntu-20.04'
+
+puppet:
+  source_file: 'puppet7-release-focal.deb'
+  source_url: 'https://apt.puppetlabs.com/'
+  extra_packages: []
+

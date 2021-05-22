@@ -1,0 +1,13 @@
+
+vm:
+  hostname: 'prime'
+
+box:
+  os: 'centos'
+  name: 'bento/centos-8'
+  url: 'https://app.vagrantup.com/bento/boxes/centos-8'
+
+puppet:
+  source_file: 'puppet7-release-el-8.noarch.rpm'
+  source_url: 'https://yum.puppet.com/'
+  extra_packages: []

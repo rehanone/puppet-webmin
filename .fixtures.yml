@@ -8,5 +8,7 @@ fixtures:
       repo: "puppetlabs/augeas_core"
     yumrepo_core:
       repo: "puppetlabs/yumrepo_core"
+    epel:
+      repo: "puppet/epel"
   symlinks:
     webmin: "#{source_dir}"
